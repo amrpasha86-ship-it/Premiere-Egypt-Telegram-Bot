@@ -36,7 +36,15 @@ def send_message(message):
 
 
 def get_headers():
-    response = session.get(JS_URL, timeout=30)
+    response = session.get(
+        JS_URL,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/javascript,*/*;q=0.1",
+            "Referer": SITE + "/"
+        },
+        timeout=30
+    )
     response.raise_for_status()
 
     match = re.search(r'Authorization:"([^"]+)"', response.text)
@@ -169,7 +177,12 @@ def scan():
                 time.sleep(1)
 
             except Exception as error:
-                print("Showtime error:", movie.get("movie_title"), show_date, error)
+                print(
+                    "Showtime error:",
+                    movie.get("movie_title"),
+                    show_date,
+                    error
+                )
                 raise
 
     new_movies = []
